@@ -18,12 +18,14 @@ fn set_window_behind(window: &Window) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_window_state::Builder::new().build())
         .plugin(tauri_plugin_shell::init())
         .setup(|app| {
             let app_handle = app.handle();
             let webview_window = app_handle.get_webview_window("snowmetr").unwrap();
 
             webview_window.set_skip_taskbar(true).unwrap();
+            // webview_window.center().unwrap();
             // attach(webview_window.hwnd().unwrap()).unwrap();
 
             Ok(())
@@ -32,7 +34,11 @@ pub fn run() {
             set_window_behind(window);
         })
         .on_webview_event(|window, event| {})
-        .invoke_handler(tauri::generate_handler![greet, config::get_config])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            config::get_config,
+            config::read_file
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

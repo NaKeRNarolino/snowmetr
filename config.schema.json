@@ -16,12 +16,13 @@
           },
           "position": {
             "type": "object",
+            "description": "Position, described by web systems (px, %, rem, etc.)",
             "properties": {
               "x": {
-                "type": "number"
+                "type": "string"
               },
               "y": {
-                "type": "number"
+                "type": "string"
               }
             },
             "required": ["x", "y"]
